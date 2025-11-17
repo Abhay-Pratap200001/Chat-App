@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from "dotenv";
+import cookieParser from 'cookie-parser';
 import authRoute from './routes/auth.Route.js'
 import { errorHandler } from './middleware/error.Middleware.js';
 import { connectDB } from './lib/dbConnection.js';
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(express.json());
+app.use(cookieParser())
 
 // Routes
 app.use("/api/auth", authRoute)
