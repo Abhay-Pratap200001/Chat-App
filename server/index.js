@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 import authRoute from './routes/auth.Route.js'
+import messageRoutes from "./routes/message.Routes.js";
 import { errorHandler } from './middleware/error.Middleware.js';
 import { connectDB } from './lib/dbConnection.js';
 
@@ -15,6 +16,7 @@ app.use(cookieParser())
 
 // Routes
 app.use("/api/auth", authRoute)
+app.use("/api/message", messageRoutes)
 
 // Error Handler
 app.use(errorHandler);
