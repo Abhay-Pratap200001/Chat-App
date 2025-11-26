@@ -115,8 +115,8 @@ export const logout = async (_, res, next) => {
 /* ----------------------------- UPDATE PROFILE ----------------------------- */
 export const updateProfile = async (req, res, next) => {
   try {
-    const { profilePic } = req.body;
-    const userId = req.user._id;
+    const { profilePic } = req.body;    
+    const userId = req.user._id;    
 
     // Profile pic required
     if (!profilePic) {
@@ -125,7 +125,7 @@ export const updateProfile = async (req, res, next) => {
 
     // Cloudinary upload
     const uploadedImage = await cloudinary.uploader.upload(profilePic);
-
+    
     // U: Update user
     const updatedUser = await User.findByIdAndUpdate(
       userId,
