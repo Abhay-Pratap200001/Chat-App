@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", authRoute)
-app.use("/api/message", messageRoutes)
+app.use("/api/messages", messageRoutes)
 
 // Error Handler
 app.use(errorHandler);
