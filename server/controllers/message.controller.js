@@ -35,8 +35,8 @@ export const getMessages = async (req, res, next) => {
     // Find all messages where the two users are either sender or receiver
     const messages = await Message.find({
       $or: [
-        { senderId: myId, receiverId: userToChat },
-        { senderId: userToChat, receiverId: myId }
+        { senderId: myId, recevierId: userToChat },
+        { senderId: userToChat, recevierId: myId }
       ]
     });
 
@@ -55,8 +55,11 @@ export const getMessages = async (req, res, next) => {
 export const sendMessage = async (req, res, next) => {
   try {
     const { text, image } = req.body; 
-    const { id: receiverId } = req.params; // The person receiving the message
-
+    console.log(req.body);
+    
+    const { id: recevierId } = req.params; // The person receiving the message
+    console.log(req.params);
+    
     const senderId = req.user._id; // Logged-in user
     let imageUrl;
 
@@ -69,7 +72,7 @@ export const sendMessage = async (req, res, next) => {
     // Create a new message document
     const newMessage = new Message({
       senderId,
-      receiverId,
+      recevierId,
       text,
       image: imageUrl,
     });
