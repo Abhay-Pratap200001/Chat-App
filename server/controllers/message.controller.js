@@ -2,6 +2,7 @@ import { ApiError } from "../lib/ApiError.js";
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import cloudinary from "../lib/cloudinary.js";
+import { getReceverSocketId, io } from "../lib/socket.js";
 
 
 // ------------------ Get All Users Except Logged-In User ------------------
@@ -80,6 +81,12 @@ export const sendMessage = async (req, res, next) => {
     // Save message in MongoDB
     await newMessage.save();
 
+    const recevierSocketId = getReceverSocketId(recevierId)
+    if (recevierSocketId){
+      io.to(recevierSocketId).emit("newMessage", newMessage)
+    } 
+
+    
     res.status(200).json(newMessage);
   } catch (error) {
     console.log("Error in sendMessage:", error.message);
