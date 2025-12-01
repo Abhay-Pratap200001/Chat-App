@@ -6,9 +6,10 @@ import messageRoutes from "./routes/message.Routes.js";
 import { errorHandler } from './middleware/error.Middleware.js';
 import { connectDB } from './lib/dbConnection.js';
 import cors from 'cors'
+import { app, server } from './lib/socket.js';
+
 
 dotenv.config();
-const app = express()
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
@@ -39,11 +40,11 @@ app.get("/", (_, res) => {
 // DB Connection + Start Server
 connectDB()
   .then(() => {
-    const server = app.listen(PORT, () => {
+    const serverr = server.listen(PORT, () => {
       console.log(`✅ Server running at http://localhost:${PORT}`);
     });
 
-    server.on("error", (error) => {
+    serverr.on("error", (error) => {
       console.error("❌ Server Error:", error);
       process.exit(1);
     });
