@@ -1,34 +1,22 @@
 {
   "name": "chatapp",
   "version": "1.0.0",
-  "description": "Build a fully functional chat app",
   "main": "index.js",
-  "type": "module",
   "scripts": {
-    "dev": "nodemon server/index.js",
-    "start": "node server/index.js",
-     "build": "npm install && npm install --prefix client && npm run build --prefix client"
+     "build": "npm install --prefix server && npm install --prefix client && npm build --prefix client",
+     "start": "npm run start --prefix server"
+
   },
-  "keywords": [
-    "MERN-STACK",
-    "J.S",
-    "NODE.JS"
-  ],
-  "author": "Abhay Pratap",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abhay-Pratap200001/Chat-App.git"
+  },
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "cloudinary": "^2.8.0",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "express-rate-limit": "^8.2.1",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.19.3 ",
-    "socket.io": "^4.8.1"
+  "bugs": {
+    "url": "https://github.com/Abhay-Pratap200001/Chat-App/issues"
   },
-  "devDependencies": {
-    "nodemon": "^3.1.11"
-  }
+  "homepage": "https://github.com/Abhay-Pratap200001/Chat-App#readme",
+  "description": ""
 }
