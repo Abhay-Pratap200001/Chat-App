@@ -1,20 +1,24 @@
 import {create} from 'zustand'
-import { axiosInstance } from '../lib/axios'
+import { axiosInstance, BASE_URL } from '../lib/axios'
 import toast from 'react-hot-toast'
+import {io} from "socket.io-client"
 
-export const useAuthStore = create((set) => ({
+
+export const useAuthStore = create((set, get) => ({
     authUser: null,
     onlineUsers:[],
     isSigningUp:false,
     isLoggingIng:false,
     isCheckingAuth: true,
     isUpdatingProfile: false,
+    socket:null,
 
 
     checkAuth: async() => {
         try {
             const res = await axiosInstance.get("/auth/check")
             set({authUser:res.data})
+            get.connectSocket()
         } catch (error) {
           set({authUser:null})  
         }finally{
@@ -28,6 +32,7 @@ export const useAuthStore = create((set) => ({
             const res = await axiosInstance.post("/auth/signup", data)
             set({authUser: res.data})
             toast.success("Account Created Successfully")
+            get().connectSocket()
         } catch (error) {
             toast.error(error.response.data.message)
         }
@@ -39,6 +44,7 @@ export const useAuthStore = create((set) => ({
             const res = await axiosInstance.post("/auth/login", data);
             set({authUser: res.data})
             toast.success("Logged in Successfully")
+            get().connectSocket()
         } catch (error) {
             toast.error(error.response.message || "Invaild Credintials")
         }
@@ -49,7 +55,8 @@ export const useAuthStore = create((set) => ({
          await axiosInstance.post("/auth/logout")
          set({authUser:null})
          toast.success("Logged Out Successfully")
-       } catch (error) {
+         get().disconnectSocket();
+        } catch (error) {
         toast.error(error.response.data.message)
        }
     },
@@ -64,5 +71,26 @@ export const useAuthStore = create((set) => ({
            console.log(error, "error in updating profile function");
             toast.error(error.response.message || "Failed To Update Profile")
         }
+    },
+
+    //connecting socket to server
+     connectSocket: () => {
+        const { authUser, socket } = get();
+        if (!authUser || socket?.connected) return;
+        const newSocket = io(BASE_URL,{withCredentials: true, query:{
+            userId: authUser._id
+        }});
+        newSocket.connect()
+        set({socket:newSocket})
+
+        newSocket.on("getOnlineUsers", (userIds) => {
+            set({onlineUsers: userIds})
+        })
+    },
+
+
+    disconnectSocket: () => {
+     if (get().socket?.connected) get().socket.disconnect()
     }
+
 }))
