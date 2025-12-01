@@ -16,9 +16,10 @@ const __dirname = path.resolve()
 
 // Middlewares
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: process.env.NODE_ENV === "production" ? true : "http://localhost:5173",
   credentials: true
 }));
+
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
@@ -29,12 +30,13 @@ app.use(cookieParser());
 app.use("/api/auth", authRoute)
 app.use("/api/messages", messageRoutes)
 
-
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/dist")));
+  const clientPath = path.resolve(__dirname, "../client/dist");
+
+  app.use(express.static(clientPath));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+    res.sendFile(path.join(clientPath, "index.html"));
   });
 }
 
