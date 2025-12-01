@@ -31,7 +31,7 @@ app.use("/api/auth", authRoute)
 app.use("/api/messages", messageRoutes)
 
 if (process.env.NODE_ENV === "production") {
-  const clientPath = path.resolve(__dirname, "../client/dist");
+  const clientPath = path.join(__dirname, "client", "dist");
 
   app.use(express.static(clientPath));
 
