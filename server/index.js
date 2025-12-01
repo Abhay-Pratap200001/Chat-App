@@ -6,11 +6,13 @@ import messageRoutes from "./routes/message.Routes.js";
 import { errorHandler } from './middleware/error.Middleware.js';
 import { connectDB } from './lib/dbConnection.js';
 import cors from 'cors'
+import path from 'path'
 import { app, server } from './lib/socket.js';
 
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
+const __dirname = path.resolve()
 
 // Middlewares
 app.use(cors({
@@ -29,10 +31,10 @@ app.use("/api/messages", messageRoutes)
 
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "client/dist")));
+  app.use(express.static(path.join(__dirname, "../client/dist")));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+    res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
   });
 }
 
