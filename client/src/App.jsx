@@ -25,9 +25,10 @@ const App = () => {
 
   console.log(authUser);
   
-  if (isCheckingAuth && authUser) return(
-    <LoadingSpinner/>
-  )
+ if (isCheckingAuth) {
+  return <LoadingSpinner />;
+}
+
 
   return (
 
